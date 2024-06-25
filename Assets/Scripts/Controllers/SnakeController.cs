@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SnakeController : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class SnakeController : MonoBehaviour
     [SerializeField] private float _speed;
 
     private Transform _transform;
+
+    public UnityEvent OnEat;
+
 
     private void Start()
     {
@@ -52,10 +56,18 @@ public class SnakeController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Food")
         {
-            Destroy(collision.gameObject);
+           Destroy(collision.gameObject);
 
            var bone = Instantiate(_bonePrefab);
             _tails.Add(bone.transform);
+
+            if (OnEat != null)
+            {
+                OnEat.Invoke();
+            }
         }   
     }
+
+
+
 }
