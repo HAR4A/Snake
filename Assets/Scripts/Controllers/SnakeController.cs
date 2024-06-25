@@ -5,9 +5,9 @@ using UnityEngine;
 public class SnakeController : MonoBehaviour
 {
     [SerializeField] private List<Transform> _tails;
+    [Range(0, 3)]
     [SerializeField] private float _bonesDistance;
     [SerializeField] private GameObject _bonePrefab;
-
     [Range(0,4)]
     [SerializeField] private float _speed;
 
@@ -28,6 +28,23 @@ public class SnakeController : MonoBehaviour
 
     private void MoveSnake(Vector3 newPosition)
     {
-        _transform.position = newPosition;
+       float _sqrDistance = _bonesDistance * _bonesDistance; // comparison of distances between bones 
+       Vector3 _previousPosition = _transform.position;
+
+       foreach (var bone in _tails)
+       {
+            if ((bone.position - _previousPosition).sqrMagnitude > _sqrDistance)
+            {
+                var _temp = bone.position;
+                bone.position = _previousPosition;
+                _previousPosition = _temp;
+            }
+            else
+            {
+                break;
+            }
+       }
+
+       _transform.position = newPosition;
     }
 }
