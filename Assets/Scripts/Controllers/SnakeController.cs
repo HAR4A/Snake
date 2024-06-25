@@ -47,4 +47,15 @@ public class SnakeController : MonoBehaviour
 
        _transform.position = newPosition;
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Food")
+        {
+            Destroy(collision.gameObject);
+
+           var bone = Instantiate(_bonePrefab);
+            _tails.Add(bone.transform);
+        }   
+    }
 }
